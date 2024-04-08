@@ -12,6 +12,7 @@ const getProjects = require('./get-projects.js')
 // issue into in progress. This function will do exactly as described in the previous sentence 
 // by making 3 async calls to different functions which we imported at the top. See function logic 
 // in the individual function files which are named as obviously as possible :) 
+
 const createProjectIssueAndUpdate = async () => {
 
   // const projectName = process.env.PROJECT_NAME
@@ -25,6 +26,7 @@ const createProjectIssueAndUpdate = async () => {
   const description = 'Do so now!!'
 
   // Note that we are using the project key which will be auto created in the above function call
+
   const issueKey = await createIssue('FIGMA2', issueType, summary, description);
   console.log(`Created issue with key: ${issueKey}`);
 
@@ -75,12 +77,21 @@ const updateStatusFunc = async (issueKey, statusID) => {
 // This will list all users
 const getUsersFunc = async () => {
   const users = await getUsers();
-  console.log(users)
+  console.log(JSON.stringify(users, null, 3))
+
+  const chunkSize = 10; // Adjust the chunk size as needed
+  for (let i = 0; i < users.length; i += chunkSize) {
+    const chunk = users.slice(i, i + chunkSize);
+    console.log(JSON.stringify(chunk, null, 2));
+  }
+
 }
 
 // Step 1, get user account ID to be able to assign a new project to a user
 // Get users - needed to get the leadAccountID to be able to create a project!
-getUsersFunc();
+
+//getUsersFunc();
+getIssuesFunc();
 
 // Step 2, add the accountID to the env file, save the file and run source .env and then 
 // uncomment the function call below to create a project, create an issue in that project,
