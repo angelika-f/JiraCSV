@@ -19,7 +19,7 @@ async function getUsers() {
 
     const config = {
       method: 'get',
-      url: baseUrl + '/rest/api/3/users/search?startAt=0&maxResults=200',
+      url: baseUrl + '/rest/api/3/users/search?startAt=100&maxResults=100',
       headers: { 'Content-Type': 'application/json' },
       auth: auth
     };

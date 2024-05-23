@@ -1,17 +1,50 @@
+// ISSUES
 const createIssue = require('./create-issue.js');
-const createProject = require('./create-project.js');
-const getIssueByID = require('./get-issue-by-id.js');
+const createCSVIssues = require('./create-issue-CSV.js')
 const deleteIssueByID = require('./delete-issue-by-id.js');
+const createEpic = require('./create-epic-CSV.js')
+const getIssueByID = require('./get-issue-by-id.js');
 const getIssues = require('./get-issues.js');
-const getTransitions = require('./get-transitions.js');
 const getUsers = require('./get-users.js');
 const updateStatus = require('./update-status.js');
 const getProjects = require('./get-projects.js')
+
+// COMPONENTS
+const deleteComponents = require('./delete-components.js')
+const createComponent = require('./create-components-CSV.js')
+
+
+// MISC
+const getTransitions = require('./get-transitions.js');
+const createProject = require('./create-project.js');
+
 
 // Common call pattern 1: create project, create issue in that project, and move that 
 // issue into in progress. This function will do exactly as described in the previous sentence 
 // by making 3 async calls to different functions which we imported at the top. See function logic 
 // in the individual function files which are named as obviously as possible :) 
+
+const deleteComponentsFunc = async () => {
+  deleteComponents();
+}
+
+const createComponentsFunc = async () => {
+  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+  const components = await createComponent(csvFile);
+  // console.log(components)
+}
+
+const createEpicIssue = async () => {
+  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+  const epic = await createEpic(csvFile);
+}
+
+const createCSVIssueFunc = async () => {
+  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv';
+
+  const issueCSV = await createCSVIssues(csvFile);
+  console.log(issueCSV)
+}
 
 const createProjectIssueAndUpdate = async () => {
 
@@ -49,7 +82,7 @@ const getRecentProjects = async () => {
 //This will list all issues for a project
 const getIssuesFunc = async () => {
   const issues = await getIssues();
-  console.log(issues)
+  console.log(JSON.stringify(issues, null, 2))
 }
 
 // This will list all transitions for a project, make sure to change the issueKey to correspond
@@ -64,10 +97,15 @@ const getIssueByIDFunc = async (issueKey) => {
   console.log(issue)
 }
 
-const deleteIssueByIDFunc = async (issueKey) => {
-  const issue = await deleteIssueByID(issueKey);
-  console.log(issue)
-}
+// const deleteIssueByIDFunc = async (issueKey) => {
+//   const issue = await deleteIssueByID(issueKey);
+//   console.log(issue)
+// }
+
+// const deleteAllIssuesFunc = async () => {
+//   const status = await deleteIssues();
+//   console.log(status)
+// }
 
 const updateStatusFunc = async (issueKey, statusID) => {
   const status = await updateStatus(issueKey, statusID);
@@ -87,36 +125,16 @@ const getUsersFunc = async () => {
 
 }
 
-// Step 1, get user account ID to be able to assign a new project to a user
-// Get users - needed to get the leadAccountID to be able to create a project!
 
-//getUsersFunc();
-getIssuesFunc();
 
-// Step 2, add the accountID to the env file, save the file and run source .env and then 
-// uncomment the function call below to create a project, create an issue in that project,
-// and mark that issue as in progress
-// createProjectIssueAndUpdate();
+//deleteComponentsFunc();
+//createComponentsFunc();
+// FUNC TO DELETE EPICS
+createEpicIssue();
+//createCSVIssueFunc(); (NON-PARENT ISSUES FIRST)
+// FUNC TO CREATE SUB-TASKS
 
-// Step 3, uncomment the function call below to get issues to see the newly created issue
-// getIssuesFunc();
 
-// Step 4, uncomment the function call below to get issues to see the newly created project
-// Get recent projects
-// getRecentProjects();
+//getIssuesFunc();
 
-// Step 4, uncomment the function call below to get issues to see the newly created project
-// Get recent projects
-// getRecentProjects();
 
-// Optional -- uncomment the function call below to get an issue by ID
-// getIssueByIDFunc('FIGMA2-3')
-
-// Optional -- uncomment the function call below to get transitions of a newly created project
-// Get transitions - needed to see how to update the status of an issue
-// getTransitionsFunc('FIGMA2-3')
-
-// updateStatusFunc('12281', '31')
-
-// Optional -- uncomment the function call below to delete an issue by ID
-// deleteIssueByIDFunc('FIGMA2-4');

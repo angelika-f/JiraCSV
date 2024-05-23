@@ -6,7 +6,7 @@ const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
 const projectKey = process.env.PROJECTKEY
 
-const jqlQuery = 'project ="${projectKey}"';
+const jqlQuery = 'project = ANTE';
 
 const auth = {
   username: username,
@@ -25,10 +25,11 @@ async function getIssues() {
     "fields": [
       "summary",
       "status",
-      "assignee"
+      "assignee",
+      
     ],
     "fieldsByKeys": false,
-    "jql": "project = WBTE",
+    "jql": "project = ANTE",
     "maxResults": 15,
     "startAt": 0
   }`;
@@ -41,7 +42,7 @@ async function getIssues() {
       method: 'get',
       //url: baseUrl + '/rest/api/3/project/20600', // gets specific project issues by project ID
       // url: baseUrl + '/rest/api/3/issue/picker?currentProjectId=20600', // gets specific project issues by project ID
-      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20WBTE', // 
+      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', // 
       headers: { 'Content-Type': 'application/json' },
       auth: auth,
       //body : bodyData

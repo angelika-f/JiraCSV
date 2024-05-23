@@ -1,9 +1,19 @@
 var axios = require('axios');
+const getIssues = require('./get-issues');
 require('dotenv').config();
 
 const username = process.env.ATLASSIAN_USERNAME
 const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
+
+
+
+
+const issueKEY = 'WBTE-254';
+
+
+
+
 
 const auth = {
   username: username,
@@ -31,5 +41,21 @@ async function deleteIssueByID(issueKey) {
     console.log(error.response.data.errors)
   }
 }
+
+
+// (async () => {
+//   try {
+//     const issueKeys = await getIssues();
+//     console.log(issueKeys);
+
+//     for (let i = 0; i < issueKeys.length; i++) {
+//     const issueKey = issueKeys[i];
+//     await deleteIssueByID(issueKey)
+//      console.log(issueKey,"deleted.")
+//     }
+//   } catch (error) {
+//     console.error('An error occurred:', error);
+//   }
+// })();
 
 module.exports = deleteIssueByID;
