@@ -12,32 +12,6 @@ const auth = {
   password: password
 };
 
-
-// Function to create a Jira issue
-async function createIssue(issueData, auth) {
-    try {
-        const baseUrl = 'https://your-domain.atlassian.net';
-        const url = `${baseUrl}/rest/api/3/issue`;
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Basic ' + auth
-            }
-        };
-        const response = await axios.post(url, issueData, config);
-        if (response.status === 201) {
-            console.log('Issue created successfully:', response.data);
-            return response.data.key;
-        } else {
-            console.error('Failed to create issue:', response.statusText);
-            return null;
-        }
-    } catch (error) {
-        console.error('Error creating issue:', error.message);
-        return null;
-    }
-}
-
 // Function to read CSV file and create Jira issues
 async function createIssuesFromCsv(csvFile) {
     fs.createReadStream(csvFile)

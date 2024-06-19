@@ -6,7 +6,7 @@ const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
 const projectKey = process.env.PROJECTKEY
 
-const jqlQuery = 'project = ANTE';
+const jqlQuery = projectKey;
 
 const auth = {
   username: username,
@@ -16,7 +16,7 @@ const auth = {
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function getIssues() {
 
-  const bodyData = `{
+  const bodyData = {
     "expand": [
       "names",
       "schema",
@@ -29,10 +29,10 @@ async function getIssues() {
       
     ],
     "fieldsByKeys": false,
-    "jql": "project = ANTE",
+    "jql": projectKey,
     "maxResults": 15,
     "startAt": 0
-  }`;
+      };
 
   try {
 
@@ -40,16 +40,21 @@ async function getIssues() {
 
     const config = {
       method: 'get',
-      //url: baseUrl + '/rest/api/3/project/20600', // gets specific project issues by project ID
-      // url: baseUrl + '/rest/api/3/issue/picker?currentProjectId=20600', // gets specific project issues by project ID
-      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', // 
+      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', 
       headers: { 'Content-Type': 'application/json' },
       auth: auth,
       //body : bodyData
     };
     
     const response = await axios.request(config);
-    const issues = response.data.issues.map(issue => issue.key); // Extract issue keys
+    const issues = response.data.issues
+    const issuesDict = response.data.issues.map(issue => {
+      return {
+      summary: issue.fields.summary,
+      issueType: issue.fields.issuetype.name
+      }
+    }); // Extract issue keys
+    console.log(issuesDict)
     return issues;
     //return response.data.json();
   } catch (error) {

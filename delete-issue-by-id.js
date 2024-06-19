@@ -55,7 +55,7 @@ async function deleteIssueByID(issueKey) {
 //     }
 //   } catch (error) {
 //     console.error('An error occurred:', error);
-//   }
+//   }  
 // })();
 
 module.exports = deleteIssueByID;

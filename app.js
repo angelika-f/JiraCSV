@@ -3,10 +3,15 @@ const createIssue = require('./create-issue.js');
 const createCSVIssues = require('./create-issue-CSV.js')
 const deleteIssueByID = require('./delete-issue-by-id.js');
 const createEpic = require('./create-epic-CSV.js')
+const deleteEpic = require('./delete-epic.js')
+const createVersion = require('./create-version-csv.js')
+const deleteVersion = require('./delete-version.js')
 const getIssueByID = require('./get-issue-by-id.js');
 const getIssues = require('./get-issues.js');
+const getVersions = require('./get-versions.js');
 const getUsers = require('./get-users.js');
 const updateStatus = require('./update-status.js');
+const getProjectID = require('./get-project-ID.js')
 const getProjects = require('./get-projects.js')
 
 // COMPONENTS
@@ -24,20 +29,38 @@ const createProject = require('./create-project.js');
 // by making 3 async calls to different functions which we imported at the top. See function logic 
 // in the individual function files which are named as obviously as possible :) 
 
-const deleteComponentsFunc = async () => {
-  deleteComponents();
+const csvFile = process.env.CSV_TEMPLATE_PATH
+
+const getProjectIDFunc= async () => {
+  await getProjectID();
 }
 
+
+
 const createComponentsFunc = async () => {
-  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
   const components = await createComponent(csvFile);
   // console.log(components)
 }
 
-const createEpicIssue = async () => {
-  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+const createEpicFunc = async () => {
+  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
   const epic = await createEpic(csvFile);
 }
+
+
+
+const createVersionFunc  = async () => {
+  await createVersion(csvFile);
+}
+
+
+
+const getVersionFunc = async () => {
+  await getVersions();
+}
+
+
 
 const createCSVIssueFunc = async () => {
   const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv';
@@ -85,8 +108,6 @@ const getIssuesFunc = async () => {
   console.log(JSON.stringify(issues, null, 2))
 }
 
-// This will list all transitions for a project, make sure to change the issueKey to correspond
-// with your project! 
 const getTransitionsFunc = async (issueKey) => {
   const transitions = await getTransitions(issueKey);
   console.log(transitions)
@@ -96,16 +117,6 @@ const getIssueByIDFunc = async (issueKey) => {
   const issue = await getIssueByID(issueKey);
   console.log(issue)
 }
-
-// const deleteIssueByIDFunc = async (issueKey) => {
-//   const issue = await deleteIssueByID(issueKey);
-//   console.log(issue)
-// }
-
-// const deleteAllIssuesFunc = async () => {
-//   const status = await deleteIssues();
-//   console.log(status)
-// }
 
 const updateStatusFunc = async (issueKey, statusID) => {
   const status = await updateStatus(issueKey, statusID);
@@ -126,12 +137,32 @@ const getUsersFunc = async () => {
 }
 
 
+async function clearBoard() {
+    await deleteComponents();
+    await deleteEpic();
+    await deleteVersion();
+}
 
-//deleteComponentsFunc();
-//createComponentsFunc();
-// FUNC TO DELETE EPICS
-createEpicIssue();
+
+async function createFoundation(){
+  await createComponent(csvFile);
+  await createEpic(csvFile)
+  await createVersion(csvFile);
+}
+
+
+//clearBoard();
+createFoundation();
+// await createFoundation()
+
+
+
+//getProjectIDFunc()
+//createVersionFunc();
+//getVersionFunc();
+
 //createCSVIssueFunc(); (NON-PARENT ISSUES FIRST)
+//getIssuesFunc();
 // FUNC TO CREATE SUB-TASKS
 
 
