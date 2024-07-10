@@ -40,7 +40,7 @@ async function getIssues() {
 
     const config = {
       method: 'get',
-      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', 
+      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', // is a task type!! 
       headers: { 'Content-Type': 'application/json' },
       auth: auth,
       //body : bodyData

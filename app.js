@@ -4,6 +4,7 @@ const createCSVIssues = require('./create-issue-CSV.js')
 const deleteIssueByID = require('./delete-issue-by-id.js');
 const createEpic = require('./create-epic-CSV.js')
 const deleteEpic = require('./delete-epic.js')
+const deleteTasks = require('./delete-tasks.js')
 const createVersion = require('./create-version-csv.js')
 const deleteVersion = require('./delete-version.js')
 const getIssueByID = require('./get-issue-by-id.js');
@@ -34,8 +35,6 @@ const csvFile = process.env.CSV_TEMPLATE_PATH
 const getProjectIDFunc= async () => {
   await getProjectID();
 }
-
-
 
 const createComponentsFunc = async () => {
   //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
@@ -105,7 +104,6 @@ const getRecentProjects = async () => {
 //This will list all issues for a project
 const getIssuesFunc = async () => {
   const issues = await getIssues();
-  console.log(JSON.stringify(issues, null, 2))
 }
 
 const getTransitionsFunc = async (issueKey) => {
@@ -141,31 +139,28 @@ async function clearBoard() {
     await deleteComponents();
     await deleteEpic();
     await deleteVersion();
+    await deleteTasks();
 }
 
 
-async function createFoundation(){
+async function createBoard(){
   await createComponent(csvFile);
   await createEpic(csvFile)
   await createVersion(csvFile);
+  await createCSVIssues(csvFile);
 }
 
 
 //clearBoard();
-createFoundation();
-// await createFoundation()
+createBoard();
 
 
 
-//getProjectIDFunc()
-//createVersionFunc();
-//getVersionFunc();
-
-//createCSVIssueFunc(); (NON-PARENT ISSUES FIRST)
-//getIssuesFunc();
-// FUNC TO CREATE SUB-TASKS
 
 
-//getIssuesFunc();
+
+
+
+
 
 
