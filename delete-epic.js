@@ -17,6 +17,8 @@ const auth = {
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteEpic() {
 
+  console.log("Deleting epics...");
+
 const issues = await getIssues();
 
   try {
@@ -38,9 +40,9 @@ const issues = await getIssues();
             const response = await axios.request(config);
 
 
-        } 
+        }
     }
-
+    return new Promise((resolve) => setTimeout(resolve, 1000));
     
   } catch (error) {
     console.log('error: ')

@@ -16,6 +16,7 @@ const auth = {
 
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteTasks() {
+  console.log("Deleting tasks...");
 
 const issues = await getIssues();
 
@@ -40,7 +41,7 @@ const issues = await getIssues();
 
         } 
     }
-
+    return new Promise((resolve) => setTimeout(resolve, 1000));
     
   } catch (error) {
     console.log('error: ')

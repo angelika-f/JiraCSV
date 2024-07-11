@@ -3,6 +3,8 @@ require('dotenv').config();
 
 async function deleteComponents(){
 
+  console.log("Deleting components...");
+
 const username = process.env.ATLASSIAN_USERNAME
 const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
@@ -49,7 +51,7 @@ try {
             console.log("Component with ID", componentKey, "deleted.")
         }
     
-    return response
+    return new Promise((resolve) => setTimeout(resolve, 1000));
     
     //const issues = response.data.issues.map(issue => issue.key); // Extract issue keys
     //return issues;

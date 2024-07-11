@@ -136,24 +136,75 @@ const getUsersFunc = async () => {
 
 
 async function clearBoard() {
-    await deleteComponents();
-    await deleteEpic();
-    await deleteVersion();
-    await deleteTasks();
+  try {
+      await deleteComponents();
+      console.log("Components deleted");
+  } catch (error) {
+      console.error("Error deleting components:", error);
+  }
+
+  try {
+      await deleteEpic();
+      console.log("Epic deleted");
+  } catch (error) {
+      console.error("Error deleting epic:", error);
+  }
+
+  try {
+      await deleteVersion();
+      console.log("Version deleted");
+  } catch (error) {
+      console.error("Error deleting version:", error);
+  }
+
+  try {
+      await deleteTasks();
+      console.log("Tasks deleted");
+  } catch (error) {
+      console.error("Error deleting tasks:", error);
+  }
+
+  console.log("Board cleared");
 }
+
 
 
 async function createBoard(){
-  await createComponent(csvFile);
-  await createEpic(csvFile)
-  await createVersion(csvFile);
-  await createCSVIssues(csvFile);
+  try {
+      await createComponent(csvFile);
+      console.log("Component created");
+  } catch (error) {
+      console.error("Error creating component:", error);
+  }
+
+  try {
+      await createEpic(csvFile);
+      console.log("Epic created");
+  } catch (error) {
+      console.error("Error creating epic:", error);
+  }
+
+  try {
+      await createVersion(csvFile);
+      console.log("Version created");
+  } catch (error) {
+      console.error("Error creating version:", error);
+  }
+
+  try {
+      await createCSVIssues(csvFile);
+      console.log("CSV issues created");
+  } catch (error) {
+      console.error("Error creating CSV issues:", error);
+  }
+
+  console.log("Board creation completed");
 }
 
 
-//clearBoard();
-createBoard();
 
+createBoard();
+//clearBoard();
 
 
 
