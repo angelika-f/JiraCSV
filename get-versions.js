@@ -4,36 +4,38 @@ require('dotenv').config();
 const username = process.env.ATLASSIAN_USERNAME
 const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
+const projectKey = process.env.PROJECT_KEY
 
 const auth = {
   username: username,
   password: password
 };
 
-//Gets all users within a project using Jira Cloud REST API
-async function getUsers() {
+//Gets all issues in a particular project using the Jira Cloud REST API
+async function getVersions() {
 
   try {
 
     const baseUrl = 'https://' + domain + '.atlassian.net';
 
+    console.log(projectKey)
+
     const config = {
       method: 'get',
-      url: baseUrl + '/rest/api/3/users/search?startAt=100&maxResults=100',
+      url: `${baseUrl}/rest/api/3/project/${projectKey}/versions`,
       headers: { 'Content-Type': 'application/json' },
-      auth: auth
+      auth: auth,
     };
+    
     const response = await axios.request(config);
-    console.log(response.data)
-    // response.data.array.forEach(element => {
-    //   console.log(element)
-    // });
-
-    return response.data;
+    const versions = response.data;
+    console.log(versions);
+    return versions;
+    
   } catch (error) {
     console.log('error: ')
     console.log(error.response.data.errors)
   }
 }
 
-module.exports = getUsers;
+module.exports = getVersions;

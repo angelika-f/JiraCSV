@@ -1,17 +1,73 @@
+// ISSUES
 const createIssue = require('./create-issue.js');
-const createProject = require('./create-project.js');
-const getIssueByID = require('./get-issue-by-id.js');
+const createCSVIssues = require('./create-issue-CSV.js')
 const deleteIssueByID = require('./delete-issue-by-id.js');
+const createEpic = require('./create-epic-CSV.js')
+const deleteEpic = require('./delete-epic.js')
+const createVersion = require('./create-version-csv.js')
+const deleteVersion = require('./delete-version.js')
+const getIssueByID = require('./get-issue-by-id.js');
 const getIssues = require('./get-issues.js');
-const getTransitions = require('./get-transitions.js');
+const getVersions = require('./get-versions.js');
 const getUsers = require('./get-users.js');
 const updateStatus = require('./update-status.js');
+const getProjectID = require('./get-project-ID.js')
 const getProjects = require('./get-projects.js')
+
+// COMPONENTS
+const deleteComponents = require('./delete-components.js')
+const createComponent = require('./create-components-CSV.js')
+
+
+// MISC
+const getTransitions = require('./get-transitions.js');
+const createProject = require('./create-project.js');
+
 
 // Common call pattern 1: create project, create issue in that project, and move that 
 // issue into in progress. This function will do exactly as described in the previous sentence 
 // by making 3 async calls to different functions which we imported at the top. See function logic 
 // in the individual function files which are named as obviously as possible :) 
+
+const csvFile = process.env.CSV_TEMPLATE_PATH
+
+const getProjectIDFunc= async () => {
+  await getProjectID();
+}
+
+
+
+const createComponentsFunc = async () => {
+  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+  const components = await createComponent(csvFile);
+  // console.log(components)
+}
+
+const createEpicFunc = async () => {
+  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
+  const epic = await createEpic(csvFile);
+}
+
+
+
+const createVersionFunc  = async () => {
+  await createVersion(csvFile);
+}
+
+
+
+const getVersionFunc = async () => {
+  await getVersions();
+}
+
+
+
+const createCSVIssueFunc = async () => {
+  const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv';
+
+  const issueCSV = await createCSVIssues(csvFile);
+  console.log(issueCSV)
+}
 
 const createProjectIssueAndUpdate = async () => {
 
@@ -49,11 +105,9 @@ const getRecentProjects = async () => {
 //This will list all issues for a project
 const getIssuesFunc = async () => {
   const issues = await getIssues();
-  console.log(issues)
+  console.log(JSON.stringify(issues, null, 2))
 }
 
-// This will list all transitions for a project, make sure to change the issueKey to correspond
-// with your project! 
 const getTransitionsFunc = async (issueKey) => {
   const transitions = await getTransitions(issueKey);
   console.log(transitions)
@@ -61,11 +115,6 @@ const getTransitionsFunc = async (issueKey) => {
 
 const getIssueByIDFunc = async (issueKey) => {
   const issue = await getIssueByID(issueKey);
-  console.log(issue)
-}
-
-const deleteIssueByIDFunc = async (issueKey) => {
-  const issue = await deleteIssueByID(issueKey);
   console.log(issue)
 }
 
@@ -87,36 +136,36 @@ const getUsersFunc = async () => {
 
 }
 
-// Step 1, get user account ID to be able to assign a new project to a user
-// Get users - needed to get the leadAccountID to be able to create a project!
 
-//getUsersFunc();
-getIssuesFunc();
+async function clearBoard() {
+    await deleteComponents();
+    await deleteEpic();
+    await deleteVersion();
+}
 
-// Step 2, add the accountID to the env file, save the file and run source .env and then 
-// uncomment the function call below to create a project, create an issue in that project,
-// and mark that issue as in progress
-// createProjectIssueAndUpdate();
 
-// Step 3, uncomment the function call below to get issues to see the newly created issue
-// getIssuesFunc();
+async function createFoundation(){
+  await createComponent(csvFile);
+  await createEpic(csvFile)
+  await createVersion(csvFile);
+}
 
-// Step 4, uncomment the function call below to get issues to see the newly created project
-// Get recent projects
-// getRecentProjects();
 
-// Step 4, uncomment the function call below to get issues to see the newly created project
-// Get recent projects
-// getRecentProjects();
+//clearBoard();
+createFoundation();
+// await createFoundation()
 
-// Optional -- uncomment the function call below to get an issue by ID
-// getIssueByIDFunc('FIGMA2-3')
 
-// Optional -- uncomment the function call below to get transitions of a newly created project
-// Get transitions - needed to see how to update the status of an issue
-// getTransitionsFunc('FIGMA2-3')
 
-// updateStatusFunc('12281', '31')
+//getProjectIDFunc()
+//createVersionFunc();
+//getVersionFunc();
 
-// Optional -- uncomment the function call below to delete an issue by ID
-// deleteIssueByIDFunc('FIGMA2-4');
+//createCSVIssueFunc(); (NON-PARENT ISSUES FIRST)
+//getIssuesFunc();
+// FUNC TO CREATE SUB-TASKS
+
+
+//getIssuesFunc();
+
+
