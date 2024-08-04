@@ -1,64 +1,47 @@
-// ISSUES
-const createIssue = require('./create-issue.js');
-const createCSVIssues = require('./create-issue-CSV.js')
-const deleteIssueByID = require('./delete-issue-by-id.js');
-const createEpic = require('./create-epic-CSV.js')
-const deleteEpic = require('./delete-epic.js')
-const deleteTasks = require('./delete-tasks.js')
-const createVersion = require('./create-version-csv.js')
-const deleteVersion = require('./delete-version.js')
-const getIssueByID = require('./get-issue-by-id.js');
-const getIssues = require('./get-issues.js');
-const getVersions = require('./get-versions.js');
-const getUsers = require('./get-users.js');
-const updateStatus = require('./update-status.js');
+// Environment Variables
+const csvFile = process.env.CSV_TEMPLATE_PATH
+
+
+// PROJECT
 const getProjectID = require('./get-project-ID.js')
 const getProjects = require('./get-projects.js')
 
-// COMPONENTS
-const deleteComponents = require('./delete-components.js')
+// ISSUE
+const createIssue = require('./create-issue.js');
+const createCSVIssues = require('./create-issue-CSV.js')
+const deleteTasks = require('./delete-tasks.js')
+const createEpic = require('./create-epic-CSV.js')
+const deleteEpic = require('./delete-epic.js')
+const getIssueByID = require('./get-issue-by-id.js');
+const getIssues = require('./get-issues.js');
+
+// COMPONENT
 const createComponent = require('./create-components-CSV.js')
+const deleteComponents = require('./delete-components.js')
 
+// VERSION
+const createVersion = require('./create-version-csv.js')
+const deleteVersion = require('./delete-version.js')
+const getVersions = require('./get-versions.js');
 
-// MISC
+// ?
+const getUsers = require('./get-users.js');
+const updateStatus = require('./update-status.js');
 const getTransitions = require('./get-transitions.js');
-const createProject = require('./create-project.js');
 
 
-// Common call pattern 1: create project, create issue in that project, and move that 
-// issue into in progress. This function will do exactly as described in the previous sentence 
-// by making 3 async calls to different functions which we imported at the top. See function logic 
-// in the individual function files which are named as obviously as possible :) 
+// Order of operation:
+// 1. Create components
+// 2. Create versions
+// 3. Create epics
+// 4. Create tasks (parent to epics) (apply version)
+// 5. Create sub-tasks (parent to tasks) (apply version)
 
-const csvFile = process.env.CSV_TEMPLATE_PATH
+
 
 const getProjectIDFunc= async () => {
   await getProjectID();
 }
-
-const createComponentsFunc = async () => {
-  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
-  const components = await createComponent(csvFile);
-  // console.log(components)
-}
-
-const createEpicFunc = async () => {
-  //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
-  const epic = await createEpic(csvFile);
-}
-
-
-
-const createVersionFunc  = async () => {
-  await createVersion(csvFile);
-}
-
-
-
-const getVersionFunc = async () => {
-  await getVersions();
-}
-
 
 
 const createCSVIssueFunc = async () => {
@@ -104,6 +87,7 @@ const getRecentProjects = async () => {
 //This will list all issues for a project
 const getIssuesFunc = async () => {
   const issues = await getIssues();
+  console.log(JSON.stringify(issues, null, 2))
 }
 
 const getTransitionsFunc = async (issueKey) => {
@@ -203,15 +187,21 @@ async function createBoard(){
 
 
 
-createBoard();
-//clearBoard();
+clearBoard();
+//createBoard();
 
 
 
 
+//getProjectIDFunc()
+//createVersionFunc();
+//getVersionFunc();
 
 
+//getIssuesFunc();
+// FUNC TO CREATE SUB-TASKS
 
 
+//getIssuesFunc();
 
 
