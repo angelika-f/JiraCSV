@@ -16,31 +16,13 @@ const auth = {
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function getIssues() {
 
-  const bodyData = {
-    "expand": [
-      "names",
-      "schema",
-      "operations"
-    ],
-    "fields": [
-      "summary",
-      "status",
-      "assignee",
-      
-    ],
-    "fieldsByKeys": false,
-    "jql": projectKey,
-    "maxResults": 15,
-    "startAt": 0
-      };
-
   try {
 
     const baseUrl = 'https://' + domain + '.atlassian.net';
 
     const config = {
       method: 'get',
-      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', 
+      url: baseUrl + '/rest/api/3/search?jql=project%20%3D%20ANTE', // is a task type!! 
       headers: { 'Content-Type': 'application/json' },
       auth: auth,
       //body : bodyData
@@ -54,7 +36,7 @@ async function getIssues() {
       issueType: issue.fields.issuetype.name
       }
     }); // Extract issue keys
-    console.log(issuesDict)
+    //console.log(issuesDict)
     return issues;
     //return response.data.json();
   } catch (error) {

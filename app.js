@@ -4,6 +4,7 @@ const createCSVIssues = require('./create-issue-CSV.js')
 const deleteIssueByID = require('./delete-issue-by-id.js');
 const createEpic = require('./create-epic-CSV.js')
 const deleteEpic = require('./delete-epic.js')
+const deleteTasks = require('./delete-tasks.js')
 const createVersion = require('./create-version-csv.js')
 const deleteVersion = require('./delete-version.js')
 const getIssueByID = require('./get-issue-by-id.js');
@@ -34,8 +35,6 @@ const csvFile = process.env.CSV_TEMPLATE_PATH
 const getProjectIDFunc= async () => {
   await getProjectID();
 }
-
-
 
 const createComponentsFunc = async () => {
   //const csvFile = '/Users/angelikafiluba/Downloads/Mobile CSV Test.csv'
@@ -105,7 +104,6 @@ const getRecentProjects = async () => {
 //This will list all issues for a project
 const getIssuesFunc = async () => {
   const issues = await getIssues();
-  console.log(JSON.stringify(issues, null, 2))
 }
 
 const getTransitionsFunc = async (issueKey) => {
@@ -138,34 +136,82 @@ const getUsersFunc = async () => {
 
 
 async function clearBoard() {
-    await deleteComponents();
-    await deleteEpic();
-    await deleteVersion();
+  try {
+      await deleteComponents();
+      console.log("Components deleted");
+  } catch (error) {
+      console.error("Error deleting components:", error);
+  }
+
+  try {
+      await deleteEpic();
+      console.log("Epic deleted");
+  } catch (error) {
+      console.error("Error deleting epic:", error);
+  }
+
+  try {
+      await deleteVersion();
+      console.log("Version deleted");
+  } catch (error) {
+      console.error("Error deleting version:", error);
+  }
+
+  try {
+      await deleteTasks();
+      console.log("Tasks deleted");
+  } catch (error) {
+      console.error("Error deleting tasks:", error);
+  }
+
+  console.log("Board cleared");
 }
 
 
-async function createFoundation(){
-  await createComponent(csvFile);
-  await createEpic(csvFile)
-  await createVersion(csvFile);
+
+async function createBoard(){
+  try {
+      await createComponent(csvFile);
+      console.log("Component created");
+  } catch (error) {
+      console.error("Error creating component:", error);
+  }
+
+  try {
+      await createEpic(csvFile);
+      console.log("Epic created");
+  } catch (error) {
+      console.error("Error creating epic:", error);
+  }
+
+  try {
+      await createVersion(csvFile);
+      console.log("Version created");
+  } catch (error) {
+      console.error("Error creating version:", error);
+  }
+
+  try {
+      await createCSVIssues(csvFile);
+      console.log("CSV issues created");
+  } catch (error) {
+      console.error("Error creating CSV issues:", error);
+  }
+
+  console.log("Board creation completed");
 }
 
 
+
+createBoard();
 //clearBoard();
-createFoundation();
-// await createFoundation()
 
 
 
-//getProjectIDFunc()
-//createVersionFunc();
-//getVersionFunc();
-
-//createCSVIssueFunc(); (NON-PARENT ISSUES FIRST)
-//getIssuesFunc();
-// FUNC TO CREATE SUB-TASKS
 
 
-//getIssuesFunc();
+
+
+
 
 

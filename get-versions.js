@@ -18,7 +18,7 @@ async function getVersions() {
 
     const baseUrl = 'https://' + domain + '.atlassian.net';
 
-    console.log(projectKey)
+    //console.log(projectKey)
 
     const config = {
       method: 'get',

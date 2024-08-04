@@ -15,24 +15,23 @@ const auth = {
 
 
 //Gets all issues in a particular project using the Jira Cloud REST API
-async function deleteEpic() {
-
-  console.log("Deleting epics...");
+async function deleteTasks() {
+  console.log("Deleting tasks...");
 
 const issues = await getIssues();
 
   try {
 
     for (let issue of issues) {
-        if (issue.fields.issuetype.name == "Epic"){
-            const epicID = issue.id
-            console.log("Deleting Epic of name",issue.fields.summary)
+        if (issue.fields.issuetype.name == "Task"){
+            const taskID = issue.id
+            console.log("Deleting Task of name",issue.fields.summary)
 
             const baseUrl = 'https://' + domain + '.atlassian.net';
 
             const config = {
                 method: 'delete',
-                url: baseUrl + '/rest/api/3/issue/' + epicID,
+                url: baseUrl + '/rest/api/3/issue/' + taskID,
                 headers: { 'Content-Type': 'application/json' },
                 auth: auth
             };
@@ -40,7 +39,7 @@ const issues = await getIssues();
             const response = await axios.request(config);
 
 
-        }
+        } 
     }
     return new Promise((resolve) => setTimeout(resolve, 1000));
     
@@ -51,4 +50,4 @@ const issues = await getIssues();
 }
 
 
-module.exports = deleteEpic;
+module.exports = deleteTasks;

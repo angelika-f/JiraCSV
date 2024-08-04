@@ -15,6 +15,7 @@ const auth = {
 
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteVersion() {
+  console.log("Deleting version...");
 
 const versions = await getVersion(); // need func 
 
@@ -50,7 +51,7 @@ const versions = await getVersion(); // need func
             console.log(response.data)
             console.log('Version',version.name,'deleted.')
     }
-
+    return new Promise((resolve) => setTimeout(resolve, 1000));
     
   } catch (error) {
     console.log('error: ')
