@@ -2,27 +2,24 @@ const fs = require('fs');
 var axios = require('axios');
 require('dotenv').config();
 const csv = require('csv-parser');
-const deleteComponents = require('./delete-components');
 
 const username = process.env.ATLASSIAN_USERNAME
 const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
-const projectName = process.env.PROJECT_NAME
 const projectKey = process.env.PROJECT_KEY
+
+const baseUrl = 'https://' + domain + '.atlassian.net';
 
 const auth = {
   username: username,
   password: password
 };
 
-
 async function createComponent(csvFile){
 
-  // delete existing components
+  console.log("IN PROGRESS: Creating components...")
 
   try {
-
-    const baseUrl = 'https://' + domain + '.atlassian.net';
 
     const config = {
       headers: { 'Content-Type': 'application/json' },
@@ -30,16 +27,13 @@ async function createComponent(csvFile){
     };
 
     // body of data taken from CSV
-    
     let dict = {};
-    let project = "ANTE"; // Global variable for project
 
 fs.createReadStream(csvFile)
   .pipe(csv())
   .on('data', (row) => {
-    // Save to dict
     dict[row.components] = {
-      "project": project,
+      "project": projectKey,
       "name": row.components,
       "description": "Update based on project scope.",
       "assigneeType": "COMPONENT_LEAD",
@@ -80,7 +74,7 @@ fs.createReadStream(csvFile)
         const response = await axios.request(requestBody)
 
         if (response.status === 201) {
-          console.log('Component created successfully:', response.data);
+          console.log('Component created successfully:', response.data.name);
         } else {
           console.error('Failed to create component:', response.statusText);
         }

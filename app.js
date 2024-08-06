@@ -1,6 +1,7 @@
+require('dotenv').config();
+
 // Environment Variables
 const csvFile = process.env.CSV_TEMPLATE_PATH
-
 
 // PROJECT
 const getProjectID = require('./get-project-ID.js')
@@ -155,8 +156,11 @@ async function clearBoard() {
 
 async function createBoard(){
   try {
+      if (typeof csvFile !== 'string') {
+        console.log(csvFile);
+        throw new TypeError('The "path" argument must be of type string. Received ' + typeof csvFile);
+      }
       await createComponent(csvFile);
-      console.log("Component created");
   } catch (error) {
       console.error("Error creating component:", error);
   }
@@ -169,10 +173,10 @@ async function createBoard(){
   }
 
   try {
-      await createEpic(csvFile);
-      console.log("Epic created");
+    const epicDict = await createEpic(csvFile);
+    console.log(JSON.stringify(epicDict, null, 2))
   } catch (error) {
-      console.error("Error creating epic:", error);
+    console.error("Error creating epic:", error);
   }
 
   try {
@@ -186,10 +190,8 @@ async function createBoard(){
 }
 
 
-
-clearBoard();
-//createBoard();
-//getIssuesFunc();
+createBoard();
+//deleteEpic();
 
 
 
