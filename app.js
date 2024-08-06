@@ -3,14 +3,16 @@ require('dotenv').config();
 // Environment Variables
 const csvFile = process.env.CSV_TEMPLATE_PATH
 
+// USER
+const getUsers = require('./get-users.js');
+
 // PROJECT
-const getProjectID = require('./get-project-ID.js')
-const getProjects = require('./get-projects.js')
+const getProjectID = require('./get-project-ID.js') // Retrieves project ID for specific project
+const getProjects = require('./get-projects.js') // Retrieves all projects on workspace
 
 // ISSUE
-const createIssue = require('./create-issue.js');
-const createCSVIssues = require('./create-issue-CSV.js')
-const deleteTasks = require('./delete-tasks.js')
+const createCSVIssues = require('./create-issue-CSV.js') // Creates tasks from CSV
+const deleteTasks = require('./delete-tasks.js') // Deletes tasks
 const createEpic = require('./create-epic-CSV.js')
 const deleteEpic = require('./delete-epic.js')
 const getIssueByID = require('./get-issue-by-id.js');
@@ -25,10 +27,8 @@ const createVersion = require('./create-version-csv.js')
 const deleteVersion = require('./delete-version.js')
 const getVersions = require('./get-versions.js');
 
-// ?
-const getUsers = require('./get-users.js');
-const updateStatus = require('./update-status.js');
-const getTransitions = require('./get-transitions.js');
+
+
 
 let versionDict = {};
 let epicDict = {};
@@ -121,7 +121,6 @@ const getUsersFunc = async () => {
   }
 
 }
-
 
 async function clearBoard() {
   try {
