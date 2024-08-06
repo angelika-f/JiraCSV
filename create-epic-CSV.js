@@ -15,7 +15,6 @@ const auth = {
 
 let epicDict = {}; // epic name, epic key] (for parenting issues later on)
 
-//creates an issue in Jira Cloud using REST API 
 async function createEpic(csvFile) {
 
   console.log("IN PROGRESS: Creating epics...");

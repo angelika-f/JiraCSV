@@ -56,8 +56,6 @@ fs.createReadStream(csvFile)
       }
     }
 
-    console.log('Unique Dictionary:', uniqueDict);
-
     // Make API requests
     for (let key in uniqueDict) {
       try {

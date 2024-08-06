@@ -156,25 +156,21 @@ async function clearBoard() {
 
 async function createBoard(){
   try {
-      if (typeof csvFile !== 'string') {
-        console.log(csvFile);
-        throw new TypeError('The "path" argument must be of type string. Received ' + typeof csvFile);
-      }
       await createComponent(csvFile);
   } catch (error) {
       console.error("Error creating component:", error);
   }
 
   try {
-    await createVersion(csvFile);
-    console.log("Version created");
+    const versionDict = await createVersion(csvFile);
+    console.log(JSON.stringify(versionDict, null, 2)) // version dict returned
   } catch (error) {
     console.error("Error creating version:", error);
   }
 
   try {
     const epicDict = await createEpic(csvFile);
-    console.log(JSON.stringify(epicDict, null, 2))
+    console.log(JSON.stringify(epicDict, null, 2)) // epic dict returned
   } catch (error) {
     console.error("Error creating epic:", error);
   }
@@ -186,11 +182,12 @@ async function createBoard(){
       console.error("Error creating CSV issues:", error);
   }
 
-  console.log("Board creation completed");
+  console.log("Board creation completed.");
 }
 
 
 createBoard();
+//clearBoard();
 //deleteEpic();
 
 
