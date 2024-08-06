@@ -128,17 +128,10 @@ async function clearBoard() {
   }
 
   try {
-      await deleteEpic();
-      console.log("Epic deleted");
+    await deleteVersion();
+    console.log("Version deleted");
   } catch (error) {
-      console.error("Error deleting epic:", error);
-  }
-
-  try {
-      await deleteVersion();
-      console.log("Version deleted");
-  } catch (error) {
-      console.error("Error deleting version:", error);
+    console.error("Error deleting version:", error);
   }
 
   try {
@@ -146,6 +139,13 @@ async function clearBoard() {
       console.log("Tasks deleted");
   } catch (error) {
       console.error("Error deleting tasks:", error);
+  }
+
+  try {
+    await deleteEpic();
+    console.log("Epic deleted");
+  } catch (error) {
+    console.error("Error deleting epic:", error);
   }
 
   console.log("Board cleared");
@@ -162,17 +162,17 @@ async function createBoard(){
   }
 
   try {
+    await createVersion(csvFile);
+    console.log("Version created");
+  } catch (error) {
+    console.error("Error creating version:", error);
+  }
+
+  try {
       await createEpic(csvFile);
       console.log("Epic created");
   } catch (error) {
       console.error("Error creating epic:", error);
-  }
-
-  try {
-      await createVersion(csvFile);
-      console.log("Version created");
-  } catch (error) {
-      console.error("Error creating version:", error);
   }
 
   try {
@@ -189,7 +189,7 @@ async function createBoard(){
 
 clearBoard();
 //createBoard();
-
+//getIssuesFunc();
 
 
 
