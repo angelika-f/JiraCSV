@@ -30,6 +30,9 @@ const getUsers = require('./get-users.js');
 const updateStatus = require('./update-status.js');
 const getTransitions = require('./get-transitions.js');
 
+let versionDict = {};
+let epicDict = {};
+let issuesDict = {};
 
 // Order of operation:
 // 1. Create components
@@ -162,22 +165,24 @@ async function createBoard(){
   }
 
   try {
-    const versionDict = await createVersion(csvFile);
+    versionDict = await createVersion(csvFile);
     console.log(JSON.stringify(versionDict, null, 2)) // version dict returned
   } catch (error) {
     console.error("Error creating version:", error);
   }
 
   try {
-    const epicDict = await createEpic(csvFile);
+    epicDict = {};
+    epicDict = await createEpic(csvFile);
     console.log(JSON.stringify(epicDict, null, 2)) // epic dict returned
   } catch (error) {
     console.error("Error creating epic:", error);
   }
 
   try {
-      await createCSVIssues(csvFile);
-      console.log("CSV issues created");
+    issuesDict = {};
+    issuesDict = await createCSVIssues(csvFile, versionDict, epicDict);
+    console.log(JSON.stringify(issuesDict, null, 2)) // issues dict returned  
   } catch (error) {
       console.error("Error creating CSV issues:", error);
   }
