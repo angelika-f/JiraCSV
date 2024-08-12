@@ -36,9 +36,9 @@ This tool automates the creation and deletion of JIRA board components, versions
     - FEATURE_OWNER
 - `CSV_TEMPLATE_PATH`: Local path to the CSV file.
 
-### Usage
+## Usage
 
-## Creating a JIRA Board
+### Creating a JIRA Board
 
 To create a JIRA board with components, versions, epics, and tasks, run:
 
@@ -46,14 +46,14 @@ To create a JIRA board with components, versions, epics, and tasks, run:
 node app.js
 ```
 
-## Clearing a JIRA Board
+### Clearing a JIRA Board
 
-## To delete all contents (components, versions, epics, tasks) from a JIRA board:
+To delete all contents (components, versions, epics, tasks) from a JIRA board:
 
 Uncomment the clearBoard() function call in the script to first empty the board.
 Run the script to clear the board before implementing the template.
 
-### Functions Overview
+## Functions Overview
 
 **createBoard()**: Creates a JIRA board based on the CSV file.
 
@@ -61,12 +61,12 @@ Run the script to clear the board before implementing the template.
 
 Individual functions for creating and deleting components, versions, epics, and tasks and fetching project/user info:
 
-## User Functions
+### User Functions
 
 - **`getUsers()`**: Retrieves a list of users.
   - *File*: `./get-users.js`
 
-## Project Functions
+### Project Functions
 
 - **`getProjectID()`**: Retrieves the project ID for a specific project.
   - *File*: `./get-project-ID.js`
@@ -74,7 +74,7 @@ Individual functions for creating and deleting components, versions, epics, and 
 - **`getProjects()`**: Retrieves all projects on the workspace.
   - *File*: `./get-projects.js`
 
-## Issue Functions
+### Issue Functions
 
 - **`createCSVIssues()`**: Creates tasks from a CSV file.
   - *File*: `./create-issue-CSV.js`
@@ -94,7 +94,7 @@ Individual functions for creating and deleting components, versions, epics, and 
 - **`getIssues()`**: Retrieves a list of issues.
   - *File*: `./get-issues.js`
 
-## Component Functions
+### Component Functions
 
 - **`createComponent()`**: Creates components from a CSV file.
   - *File*: `./create-components-CSV.js`
@@ -102,7 +102,7 @@ Individual functions for creating and deleting components, versions, epics, and 
 - **`deleteComponents()`**: Deletes components.
   - *File*: `./delete-components.js`
 
-## Version Functions
+### Version Functions
 
 - **`createVersion()`**: Creates versions from a CSV file.
   - *File*: `./create-version-csv.js`
@@ -113,5 +113,10 @@ Individual functions for creating and deleting components, versions, epics, and 
 - **`getVersions()`**: Retrieves a list of versions.
   - *File*: `./get-versions.js`
 
-### Error Handling
+## Error Handling
 The script includes basic error handling and logs any issues encountered during the creation or deletion processes.
+
+## Acknowledgments
+
+This tool was adapted from the original code found in the [JIRA Cloud REST API Tutorial](https://github.com/horeaporutiu/JIRA-Cloud-REST-API-Tutorial) repository. The adaptation was made to work with CSV files for automated creation of JIRA board components, versions, epics, and tasks based on different CSV templates.
+
