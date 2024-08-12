@@ -26,7 +26,7 @@ async function getProjects() {
     };
     const response = await axios.request(config);
 
-    console.log("Project",response.data.key,"of id",response.data.id)
+    //console.log("Project",response.data.key,"of id",response.data.id)
 
     return response.data.id;
   } catch (error) {

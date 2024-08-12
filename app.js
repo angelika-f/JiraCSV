@@ -158,32 +158,34 @@ async function clearBoard() {
 
 async function createBoard(){
   try {
+      console.log("IN PROGRESS: Creating components...");
       await createComponent(csvFile);
   } catch (error) {
       console.error("Error creating component:", error);
   }
 
   try {
+    console.log("IN PROGRESS: Creating versions...");
     versionDict = await createVersion(csvFile);
-    console.log(JSON.stringify(versionDict, null, 2)) // version dict returned
   } catch (error) {
     console.error("Error creating version:", error);
   }
 
   try {
     epicDict = {};
+    console.log("IN PROGRESS: Creating epics...");
     epicDict = await createEpic(csvFile);
-    console.log(JSON.stringify(epicDict, null, 2)) // epic dict returned
   } catch (error) {
     console.error("Error creating epic:", error);
   }
 
   try {
     issuesDict = {};
+    console.log("IN PROGRESS: Creating tasks...");
     issuesDict = await createCSVIssues(csvFile, versionDict, epicDict);
-    console.log(JSON.stringify(issuesDict, null, 2)) // issues dict returned  
+    //console.log(JSON.stringify(issuesDict, null, 2)) // issues dict returned  
   } catch (error) {
-      console.error("Error creating CSV issues:", error);
+      console.error("Error creating tasks:", error);
   }
 
   console.log("Board creation completed.");
