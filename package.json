@@ -1,7 +1,7 @@
 {
-  "name": "jira-cloud-rest-api-tutorial",
+  "name": "jira-csv-automation",
   "version": "1.0.0",
-  "description": "This is the best tutorial out there. It will teach you basics of how to use JIRA Cloud REST APIs.  You will need a free Atlassian account to make REST API calls to JIRA Cloud.",
+  "description": "JIRA CSV template automation tool.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
