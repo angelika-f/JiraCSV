@@ -1,8 +1,117 @@
-Fully populated Jira board boilerplates per project type created from a CSV file using Jira REST API.
+# JIRA Board Automation Tool
 
-The script parses the CSV columns for components, epics, versions and tickets.
+## Description
 
-Each boilerplate contains about 100 tickets as baseline for the projects, additional scope will need to be added by the TL and the PM and TL will need to ensure all the tickets have appropriate descriptions and are fit for the project at hand.
+This tool automates the creation and deletion of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues. It is designed to streamline the process of setting up or clearing a JIRA board by reading from a specified CSV template.
 
-The CSV source files can be regularly maintained by adding tickets as knowledge evolves and learnings from post-mortems as tickets for production or TL - e.g apple submission guidelines.
+## Features
 
+- **Create Components**: Creates components from the CSV file.
+- **Create Versions**: Creates versions from the CSV file.
+- **Create Epics**: Creates epics from the CSV file.
+- **Create Tasks**: Creates tasks, and applies versions.
+- **Delete Board Contents**: Clears all components, versions, epics, and tasks from the JIRA board.
+
+## Prerequisites
+
+- Node.js installation
+
+    **Required Node.js Modules**:
+
+    ```bash
+    npm install fs axios dotenv csv-parser
+    ```
+    - fs: File system module to handle file operations.
+    - axios: For making HTTP requests.
+    - dotenv: For managing environment variables.
+    - csv-parser: For parsing CSV files.
+
+- A JIRA account with the necessary permissions to create and delete issues, components, and versions.
+- A `.env` file configured with JIRA environment variables:
+    - ATLASSIAN_API_KEY
+    - ATLASSIAN_USERNAME
+    - DOMAIN
+    - PROJECT_KEY
+    - CSV_TEMPLATE_PATH
+    - FEATURE_OWNER
+- `CSV_TEMPLATE_PATH`: Local path to the CSV file.
+
+### Usage
+
+## Creating a JIRA Board
+
+To create a JIRA board with components, versions, epics, and tasks, run:
+
+```bash
+node app.js
+```
+
+## Clearing a JIRA Board
+
+## To delete all contents (components, versions, epics, tasks) from a JIRA board:
+
+Uncomment the clearBoard() function call in the script to first empty the board.
+Run the script to clear the board before implementing the template.
+
+### Functions Overview
+
+**createBoard()**: Creates a JIRA board based on the CSV file.
+
+**clearBoard()**: Deletes all contents from the JIRA board.
+
+Individual functions for creating and deleting components, versions, epics, and tasks and fetching project/user info:
+
+## User Functions
+
+- **`getUsers()`**: Retrieves a list of users.
+  - *File*: `./get-users.js`
+
+## Project Functions
+
+- **`getProjectID()`**: Retrieves the project ID for a specific project.
+  - *File*: `./get-project-ID.js`
+
+- **`getProjects()`**: Retrieves all projects on the workspace.
+  - *File*: `./get-projects.js`
+
+## Issue Functions
+
+- **`createCSVIssues()`**: Creates tasks from a CSV file.
+  - *File*: `./create-issue-CSV.js`
+
+- **`deleteTasks()`**: Deletes tasks.
+  - *File*: `./delete-tasks.js`
+
+- **`createEpic()`**: Creates epics from a CSV file.
+  - *File*: `./create-epic-CSV.js`
+
+- **`deleteEpic()`**: Deletes epics.
+  - *File*: `./delete-epic.js`
+
+- **`getIssueByID()`**: Retrieves issue details by ID.
+  - *File*: `./get-issue-by-id.js`
+
+- **`getIssues()`**: Retrieves a list of issues.
+  - *File*: `./get-issues.js`
+
+## Component Functions
+
+- **`createComponent()`**: Creates components from a CSV file.
+  - *File*: `./create-components-CSV.js`
+
+- **`deleteComponents()`**: Deletes components.
+  - *File*: `./delete-components.js`
+
+## Version Functions
+
+- **`createVersion()`**: Creates versions from a CSV file.
+  - *File*: `./create-version-csv.js`
+
+- **`deleteVersion()`**: Deletes versions.
+  - *File*: `./delete-version.js`
+
+- **`getVersions()`**: Retrieves a list of versions.
+  - *File*: `./get-versions.js`
+
+### Error Handling
+The script includes basic error handling and logs any issues encountered during the creation or deletion processes.
