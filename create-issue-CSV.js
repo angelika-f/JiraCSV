@@ -16,24 +16,18 @@ const auth = {
 
 const baseUrl = 'https://' + domain + '.atlassian.net';
 
-let issuesDict = {}
 
-    const config = {
-      headers: { 'Content-Type': 'application/json' },
-      auth: auth
-    };
+async function createIssuesFromCsv(csvFile, epicDict) {
+  let taskCounter = 0;
+  const issuesDict = {};
 
-//creates an issue in Jira Cloud using REST API 
-async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
   try {
-    const issueList = [];
-    const issuesDict = {};
+    const issueList = []; // all task data retrieved from CSV
 
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (row) => {
-          // Collect rows that meet criteria (e.g., issueType === 'task')
           if (row.issueType.toLowerCase() === 'task') {
             issueList.push(row);
           }
@@ -41,15 +35,15 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
         .on('end', async () => {
           console.log('CSV file successfully processed.');
 
-          // Process each row and create Jira issue sequentially
+          let totalItems = issueList.length;
+
           for (const row of issueList) {
             try {
+              const epicKey = epicDict[row.epicLinkSummary]?.[0];
               const requestBody = {
                 method: 'post',
                 url: `${baseUrl}/rest/api/3/issue`,
-                headers: {
-                  'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 auth: auth,
                 data: {
                   fields: {
@@ -57,7 +51,7 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
                     summary: row.summary,
                     customfield_10101: {
                       "accountId": featureOwner,
-                      "emailAddress": "angelika.filuba@unit9.com",
+                      "emailAddress": "a@gmail.com",
                     },
                     issuetype: { name: row.issueType },
                     priority: { name: row.priority },
@@ -81,28 +75,25 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
                       originalEstimate: row.originalEstimate,
                       remainingEstimate: row.remainingEstimate
                     },
-                    // Add Epic Link and Fix Versions if available
-                    customfield_10008: epicDict[row.epicLinkSummary][0],
+                    // Add Epic Link
+                    customfield_10008: epicKey, // Add check to avoid undefined access
                   }
                 }
               };
 
-              
               const response = await axios(requestBody);
 
               if (response.status === 201) {
-                console.log(`Creating task issue for: ${row.summary}`);
-                // Add to issuesDict
                 issuesDict[row.summary] = response.data.key;
+                taskCounter++;
+                console.log('Task ', taskCounter, '/', totalItems, ' created successfully:', row.summary);
 
-                // Now update the issue with fixVersions
+                // Apply version
                 const issueKey = response.data.key;
                 const versionRequestBody = {
                   method: 'put',
                   url: `${baseUrl}/rest/api/3/issue/${issueKey}`,
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
+                  headers: { 'Content-Type': 'application/json' },
                   auth: auth,
                   data: {
                     fields: {
@@ -114,11 +105,10 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
                 const versionResponse = await axios(versionRequestBody);
 
                 if (versionResponse.status === 204) {
-                  console.log(`Fix version applied to issue: ${issueKey}`);
+                  console.log('Fix version applied to issue:', issueKey, row.summary);
                 } else {
-                  console.error(`Failed to update fix version for issue: ${issueKey}`, versionResponse.statusText);
+                  console.error('Failed to update fix version for issue:', issueKey, versionResponse.statusText);
                 }
-
 
               } else {
                 console.error('Failed to create task issue:', response.statusText);
@@ -127,7 +117,7 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
               console.error('Error creating task issue:', error.message);
             }
           }
-          // Resolve the promise with issuesDict
+
           resolve(issuesDict);
         })
         .on('error', (error) => {
@@ -135,10 +125,12 @@ async function createIssuesFromCsv(csvFile, versionDict, epicDict) {
           reject(error);
         });
     });
+
   } catch (error) {
-    console.log('Error:', error.response?.data?.errors || error.message);
+    console.log('Error:', error.message);
   }
 }
+
 
 
 module.exports = createIssuesFromCsv;

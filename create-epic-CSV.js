@@ -13,26 +13,19 @@ const auth = {
   password: password
 };
 
-let epicDict = {}; // epic name, epic key] (for parenting issues later on)
+const baseUrl = 'https://' + domain + '.atlassian.net';
 
 async function createEpic(csvFile) {
-
-  console.log("IN PROGRESS: Creating epics...");
+  let epicCounter = 0;
+  let epicDict = {}; // Define epicDict here
 
   try {
-    const baseUrl = 'https://' + domain + '.atlassian.net';
-    const config = {
-      headers: { 'Content-Type': 'application/json' },
-      auth: auth
-    };
+    let epicList = []; // all epic data retrieved from CSV rows
 
-    let epicList = [];
-
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (row) => {
-          // Save to dict
           if (row.epicLinkSummary.trim() !== '') {
             epicList.push(row.epicLinkSummary.trim());
           }
@@ -40,21 +33,11 @@ async function createEpic(csvFile) {
         .on('end', async () => {
           console.log('CSV file successfully processed.');
 
-          // Remove duplicates from the list
-          let uniqueEpicList = [];
-          let valueSet = new Set();
+          let uniqueList = [...new Set(epicList)]; // Remove duplicates
 
-          for (let value of epicList) {
-            if (!valueSet.has(value)) {
-              valueSet.add(value);
-              uniqueEpicList.push(value);
-            }
-          }
+          let totalItems = uniqueList.length; // Get total number of items
 
-          console.log('Unique Epic List:', uniqueEpicList);
-
-          // Make API requests to create epic tickets
-          for (let epic of uniqueEpicList) {
+          for (let epic of uniqueList) {
             try {
               const requestBody = {
                 method: 'post',
@@ -65,9 +48,7 @@ async function createEpic(csvFile) {
                 auth: auth,
                 data: {
                   fields: {
-                    project: {
-                      key: projectKey 
-                    },
+                    project: { key: projectKey },
                     summary: epic,
                     description: {
                       type: "doc",
@@ -84,9 +65,7 @@ async function createEpic(csvFile) {
                         }
                       ]
                     },
-                    issuetype: {
-                      name: 'Epic'
-                    }
+                    issuetype: { name: 'Epic' }
                   }
                 }
               };
@@ -95,28 +74,29 @@ async function createEpic(csvFile) {
 
               if (response.status === 201) {
                 epicDict[epic] = [response.data.key, response.data.id];
+                epicCounter++;
+                console.log('Epic ', epicCounter, '/', totalItems, ' created successfully:', epic);
               } else {
                 console.error('Failed to create epic ticket:', response.statusText);
               }
-
             } catch (error) {
               console.error('Error creating epic ticket:', error.message);
             }
           }
 
-          resolve(epicDict);
+          resolve(epicDict); // Resolve the promise with epicDict
         })
         .on('error', (error) => {
           console.error('Error reading CSV file:', error.message);
-          reject(error);
+          reject(error); // Reject the promise if there's an error reading the CSV file
         });
     });
 
   } catch (error) {
-    console.log('error: ');
-    console.log(error.response.data.errors);
+    console.log('error: ', error.message);
   }
 }
+
 
 
 module.exports = createEpic;

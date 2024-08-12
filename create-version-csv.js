@@ -15,26 +15,23 @@ const auth = {
   password: password
 };
 
-let versionDict = {};
+let versionDict = {}; // [version name, version id] - for parenting issues later on
 
 async function createVersion(csvFile) {
 
   const projectID = await getProjectID();
+  let versionsCounter = 0;
+  let versionDict = {}; // Initialize versionDict if it's not being passed as an argument
 
-  try {
-    const config = {
-      headers: { 'Content-Type': 'application/json' },
-      auth: auth
-    };
+  return new Promise((resolve, reject) => {
+    try {
+      let versionList = []; // All version data retrieved from CSV rows
 
-    let versionList = [];
-
-    return new Promise((resolve, reject) => {
+      // CSV Processing
       fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (row) => {
-          // Save to dict
-          if (row.fixVersion.trim() !== '') {
+          if (row.fixVersion.trim() !== '') { // If row is not empty, add to version list
             versionList.push(row.fixVersion.trim());
           }
         })
@@ -52,10 +49,9 @@ async function createVersion(csvFile) {
             }
           }
 
-          console.log('Unique Version List:', uniqueList);
+          let totalItems = uniqueList.length; // Get total number of items in version list
 
-          // Make API requests to create new versions
-          for (let version of uniqueList) {
+          for (let version of uniqueList) { // Make API call per version in version list
             try {
               const requestBody = {
                 method: 'post',
@@ -73,13 +69,12 @@ async function createVersion(csvFile) {
                 }
               };
 
-              console.log(`Creating version for: ${version}`);
               const response = await axios(requestBody);
 
               if (response.status === 201) {
                 versionDict[response.data.name] = response.data.id;
-                console.log('Version', response.data.name, 'created successfully.');
-
+                versionsCounter++;
+                console.log('Version ', versionsCounter, '/', totalItems, ' created successfully:', response.data.name);
               } else {
                 console.error('Failed to create version:', response.statusText);
               }
@@ -89,20 +84,21 @@ async function createVersion(csvFile) {
             }
           }
 
-          resolve(versionDict);
+          resolve(versionDict); // Resolve the promise with the versionDict after all versions are created
 
         })
         .on('error', (error) => {
           console.error('Error reading CSV file:', error.message);
           reject(error); // Reject the promise if there's an error reading the CSV file
         });
-    });
 
-  } catch (error) {
-    console.log('error: ');
-    console.log(error.response?.data?.errors || error.message);
-    throw error; // Rethrow the error to be caught by the caller
-  }
+    } catch (error) {
+      console.log('error: ');
+      console.log(error.response?.data?.errors || error.message);
+      reject(error); // Reject the promise if there's an error in the try block
+    }
+  });
 }
+
 
 module.exports = createVersion;
