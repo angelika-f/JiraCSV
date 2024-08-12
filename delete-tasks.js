@@ -16,38 +16,56 @@ const auth = {
 
 //Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteTasks() {
-  console.log("Deleting tasks...");
 
-const issues = await getIssues();
+  const issues = await getIssues(); // Ensure getIssues is defined and returns the list of issues
 
   try {
+    // Filter tasks from the issues
+    const taskIssues = issues.filter(issue => issue.fields.issuetype.name === "Task");
 
-    for (let issue of issues) {
-        if (issue.fields.issuetype.name == "Task"){
-            const taskID = issue.id
-            console.log("Deleting Task of name",issue.fields.summary)
-
-            const baseUrl = 'https://' + domain + '.atlassian.net';
-
-            const config = {
-                method: 'delete',
-                url: baseUrl + '/rest/api/3/issue/' + taskID,
-                headers: { 'Content-Type': 'application/json' },
-                auth: auth
-            };
-
-            const response = await axios.request(config);
-
-
-        } 
+    // Check if there are no tasks to delete
+    if (taskIssues.length === 0) {
+      console.error("Error: There are no tasks to delete.");
+      return;
     }
-    return new Promise((resolve) => setTimeout(resolve, 1000));
-    
+
+    let taskCounter = 0;
+    const totalTasks = taskIssues.length;
+
+    // Loop through each task and delete
+    for (let task of taskIssues) {
+      const taskID = task.id;
+      try {
+        const baseUrl = 'https://' + domain + '.atlassian.net';
+
+        const config = {
+          method: 'delete',
+          url: baseUrl + '/rest/api/3/issue/' + taskID,
+          headers: { 'Content-Type': 'application/json' },
+          auth: auth
+        };
+
+        // API Call to delete the task
+        const response = await axios.request(config);
+
+        if (response.status === 204) {
+          taskCounter++;
+          console.log('Task', taskCounter, '/', totalTasks, 'deleted successfully with name:', task.fields.summary);
+        } else {
+          console.error('Failed to delete Task with name:', task.fields.summary, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error deleting Task with ID:', taskID, error.message);
+      }
+    }
+
+    console.log('COMPLETE: All tasks deleted successfully.');
+
   } catch (error) {
-    console.log('error: ')
-    console.log(error.response.data.errors)
+    console.error('Error:', error.response?.data?.errors || error.message);
   }
 }
+
 
 
 module.exports = deleteTasks;

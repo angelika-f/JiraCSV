@@ -29,7 +29,6 @@ async function getVersions() {
     
     const response = await axios.request(config);
     const versions = response.data;
-    console.log(versions);
     return versions;
     
   } catch (error) {
