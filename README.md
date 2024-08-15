@@ -4,6 +4,8 @@
 
 This tool automates the creation and deletion of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues. It is designed to streamline the process of setting up or clearing a JIRA board by reading from a specified CSV template.
 
+For this script to work, your CSV file columns need to be configured correctly. To find out what mandatory column headers (field names) you need to include, export an existing issue CSV from Jira.
+
 ## Features
 
 - **Create Components**: Creates components from the CSV file.
@@ -35,7 +37,6 @@ This tool automates the creation and deletion of JIRA board components, versions
     - CSV_TEMPLATE_PATH
     - FEATURE_OWNER_ID
     - FEATURE_OWNER_EMAIL
-- `CSV_TEMPLATE_PATH`: Local path to the CSV file.
 
 ## Usage
 
@@ -78,7 +79,7 @@ Individual functions for creating and deleting components, versions, epics, and 
 ### Issue Functions
 
 - **`createCSVIssues()`**: Creates tasks from a CSV file.
-  - *File*: `./create-issue-CSV.js`
+  - *File*: `./create-task-CSV.js`
 
 - **`deleteTasks()`**: Deletes tasks.
   - *File*: `./delete-tasks.js`
@@ -88,9 +89,6 @@ Individual functions for creating and deleting components, versions, epics, and 
 
 - **`deleteEpic()`**: Deletes epics.
   - *File*: `./delete-epic.js`
-
-- **`getIssueByID()`**: Retrieves issue details by ID.
-  - *File*: `./get-issue-by-id.js`
 
 - **`getIssues()`**: Retrieves a list of issues.
   - *File*: `./get-issues.js`
@@ -117,7 +115,7 @@ Individual functions for creating and deleting components, versions, epics, and 
 ## Error Handling
 The script includes basic error handling and logs any issues encountered during the creation or deletion processes.
 
-## Acknowledgments
+## Credits
 
 This tool was adapted from the original code found in the [JIRA Cloud REST API Tutorial](https://github.com/horeaporutiu/JIRA-Cloud-REST-API-Tutorial) repository. The adaptation was made to work with CSV files for automated creation of JIRA board components, versions, epics, and tasks based on different CSV templates.
 
