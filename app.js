@@ -126,7 +126,7 @@ async function createBoard() {
 }
 
 
-//createBoard();
-clearBoard();
+createBoard();
+//clearBoard();
 
 
