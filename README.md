@@ -2,9 +2,11 @@
 
 ## Description
 
-This tool automates the creation and deletion of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues. It is designed to streamline the process of setting up or clearing a JIRA board by reading from a specified CSV template.
+This tool automates the creation of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues. The script parses through the columns of the CSV. It is designed to streamline the process of setting up JIRA boards for repetitive projects by creating boilerplate ticket requirements in a CSV format.
 
 For this script to work, your CSV file columns need to be configured correctly. To find out what mandatory column headers (field names) you need to include, export an existing issue CSV from Jira.
+
+You can also use the clearBoard() function to remove components, versions, epics and tasks providing a clean slate.
 
 ## Features
 
