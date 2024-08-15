@@ -33,7 +33,8 @@ This tool automates the creation and deletion of JIRA board components, versions
     - DOMAIN
     - PROJECT_KEY
     - CSV_TEMPLATE_PATH
-    - FEATURE_OWNER
+    - FEATURE_OWNER_ID
+    - FEATURE_OWNER_EMAIL
 - `CSV_TEMPLATE_PATH`: Local path to the CSV file.
 
 ## Usage
