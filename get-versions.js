@@ -11,14 +11,11 @@ const auth = {
   password: password
 };
 
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function getVersions() {
 
   try {
 
     const baseUrl = 'https://' + domain + '.atlassian.net';
-
-    //console.log(projectKey)
 
     const config = {
       method: 'get',

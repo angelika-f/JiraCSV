@@ -12,7 +12,6 @@ const auth = {
   password: password
 };
 
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteEpic() {
 
   const issues = await getIssues();

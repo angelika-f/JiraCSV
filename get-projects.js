@@ -10,7 +10,6 @@ const auth = {
   password: password
 };
 
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function getProjects() {
 
   try {

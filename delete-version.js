@@ -12,11 +12,9 @@ const auth = {
   password: password
 };
 
-
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteVersion() {
 
-  const versions = await getVersion(); // Ensure getVersion is defined and returns the list of versions
+  const versions = await getVersion(); 
 
   try {
     // Check if there are no versions to delete
@@ -31,7 +29,6 @@ async function deleteVersion() {
     // Loop through each version and delete
     for (let version of versions) {
       const versionID = version.id;
-      //console.log("Deleting Version", versionCounter + 1, "/", totalVersions, "with name:", version.name);
 
       try {
         const baseUrl = 'https://' + domain + '.atlassian.net';

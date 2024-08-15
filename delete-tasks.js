@@ -12,14 +12,12 @@ const auth = {
   password: password
 };
 
-
-
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function deleteTasks() {
 
-  const issues = await getIssues(); // Ensure getIssues is defined and returns the list of issues
+  const issues = await getIssues();
 
   try {
+    
     // Filter tasks from the issues
     const taskIssues = issues.filter(issue => issue.fields.issuetype.name === "Task");
 

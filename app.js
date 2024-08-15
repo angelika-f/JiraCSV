@@ -11,33 +11,23 @@ const getProjectID = require('./get-project-ID.js') // Retrieves project ID for 
 const getProjects = require('./get-projects.js') // Retrieves all projects on workspace
 
 // ISSUE
-const createCSVIssues = require('./create-issue-CSV.js') // Creates tasks from CSV
+const createCSVIssues = require('./create-task-CSV.js') // Creates tasks from CSV
 const deleteTasks = require('./delete-tasks.js') // Deletes tasks
-const createEpic = require('./create-epic-CSV.js')
-const deleteEpic = require('./delete-epic.js')
-const getIssueByID = require('./get-issue-by-id.js');
-const getIssues = require('./get-issues.js');
+const createEpic = require('./create-epic-CSV.js') // Creates epics
+const deleteEpic = require('./delete-epic.js') // Deletes epics
+const getIssues = require('./get-issues.js'); // Gets issues via specific JQL query
 
 // COMPONENT
-const createComponent = require('./create-components-CSV.js')
-const deleteComponents = require('./delete-components.js')
+const createComponent = require('./create-components-CSV.js') // Creates components
+const deleteComponents = require('./delete-components.js') // Deletes components
 
 // VERSION
-const createVersion = require('./create-version-csv.js')
-const deleteVersion = require('./delete-version.js')
-const getVersions = require('./get-versions.js');
+const createVersion = require('./create-version-CSV.js') // Creates project versions
+const deleteVersion = require('./delete-version.js') // Deletes project versions
+const getVersions = require('./get-versions.js'); // Gets project versions
 
 let versionDict = {};
 let epicDict = {};
-let issuesDict = {};
-
-// Order of operation:
-// 1. Create components
-// 2. Create versions
-// 3. Create epics
-// 4. Create tasks (parent to epics) (apply version)
-// 5. Create sub-tasks (parent to tasks) (apply version)
-
 
 // MISC
 const getProjectIDFunc = async () => {
@@ -57,6 +47,15 @@ const getUsersFunc = async () => {
     console.log(JSON.stringify(chunk, null, 2));
   }
 }
+
+// Important - the CSV columns need to be named as per your Jira configuration that includes required fields.
+// Best way to find this info is to export a CSV of issues from Jira to determine the column headings.
+
+// Order of operation:
+// 1. Create components
+// 2. Create versions
+// 3. Create epics
+// 4. Create tasks (parent to epics) (apply version)
 
 // To delete all contents of the Jira board
 async function clearBoard() {
@@ -127,7 +126,7 @@ async function createBoard() {
 }
 
 
-createBoard();
-//clearBoard();
+//createBoard();
+clearBoard();
 
 

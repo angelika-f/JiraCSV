@@ -17,12 +17,13 @@ const baseUrl = 'https://' + domain + '.atlassian.net';
 
 async function createEpic(csvFile) {
   let epicCounter = 0;
-  let epicDict = {}; // Define epicDict here
+  let epicDict = {};
 
   try {
     let epicList = []; // all epic data retrieved from CSV rows
 
     await new Promise((resolve, reject) => {
+      // CSV processing
       fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (row) => {
@@ -37,6 +38,7 @@ async function createEpic(csvFile) {
 
           let totalItems = uniqueList.length; // Get total number of items
 
+          // Process each epic sequentially
           for (let epic of uniqueList) {
             try {
               const requestBody = {

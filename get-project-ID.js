@@ -11,7 +11,6 @@ const auth = {
   password: password
 };
 
-//Gets all issues in a particular project using the Jira Cloud REST API
 async function getProjects() {
 
   try {
@@ -25,8 +24,6 @@ async function getProjects() {
       auth: auth
     };
     const response = await axios.request(config);
-
-    //console.log("Project",response.data.key,"of id",response.data.id)
 
     return response.data.id;
   } catch (error) {

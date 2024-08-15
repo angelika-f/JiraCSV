@@ -7,7 +7,8 @@ const username = process.env.ATLASSIAN_USERNAME
 const password = process.env.ATLASSIAN_API_KEY
 const domain = process.env.DOMAIN
 const projectKey = process.env.PROJECT_KEY
-const featureOwner = process.env.FEATURE_OWNER
+const featureOwner = process.env.FEATURE_OWNER_ID
+const featureOwnerEmail = process.env.FEATURE_OWNER_EMAIL
 
 const auth = {
   username: username,
@@ -18,17 +19,21 @@ const baseUrl = 'https://' + domain + '.atlassian.net';
 
 
 async function createIssuesFromCsv(csvFile, epicDict) {
+  
   let taskCounter = 0;
-  const issuesDict = {};
+
+  const issuesDict = {}; // all task data retrieved from CSV rows
 
   try {
     const issueList = []; // all task data retrieved from CSV
 
     await new Promise((resolve, reject) => {
+
+      // CSV Processing
       fs.createReadStream(csvFile)
         .pipe(csv())
         .on('data', (row) => {
-          if (row.issueType.toLowerCase() === 'task') {
+          if (row.issueType.toLowerCase() === 'task') { // Filters issues of type task only
             issueList.push(row);
           }
         })
@@ -37,6 +42,7 @@ async function createIssuesFromCsv(csvFile, epicDict) {
 
           let totalItems = issueList.length;
 
+          // Process each task sequentially
           for (const row of issueList) {
             try {
               const epicKey = epicDict[row.epicLinkSummary]?.[0];
@@ -51,7 +57,7 @@ async function createIssuesFromCsv(csvFile, epicDict) {
                     summary: row.summary,
                     customfield_10101: {
                       "accountId": featureOwner,
-                      "emailAddress": "a@gmail.com",
+                      "emailAddress": featureOwnerEmail,
                     },
                     issuetype: { name: row.issueType },
                     priority: { name: row.priority },
@@ -76,7 +82,7 @@ async function createIssuesFromCsv(csvFile, epicDict) {
                       remainingEstimate: row.remainingEstimate
                     },
                     // Add Epic Link
-                    customfield_10008: epicKey, // Add check to avoid undefined access
+                    customfield_10008: epicKey,
                   }
                 }
               };

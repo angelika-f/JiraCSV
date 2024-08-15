@@ -15,16 +15,16 @@ const auth = {
   password: password
 };
 
-let versionDict = {}; // [version name, version id] - for parenting issues later on
-
 async function createVersion(csvFile) {
 
   const projectID = await getProjectID();
   let versionsCounter = 0;
-  let versionDict = {}; // Initialize versionDict if it's not being passed as an argument
+  let versionDict = {}; // {version name = version ID}
 
   return new Promise((resolve, reject) => {
+
     try {
+
       let versionList = []; // All version data retrieved from CSV rows
 
       // CSV Processing
