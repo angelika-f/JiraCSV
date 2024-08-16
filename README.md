@@ -2,7 +2,7 @@
 
 ## Description
 
-This tool automates the creation of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues. The script parses through the columns of the CSV. It is designed to streamline the process of setting up JIRA boards for repetitive projects by creating boilerplate ticket requirements in a CSV format.
+This tool automates the creation of JIRA board components, versions, epics, and tasks based on a CSV file with pre-configuered issue field columns and issues using [Jira REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/). The script parses through the columns of the CSV. It is designed to streamline the process of setting up JIRA boards for repetitive projects by creating boilerplate ticket requirements in a CSV format.
 
 For this script to work, your CSV file columns need to be configured correctly. To find out what mandatory column headers (field names) you need to include, export an existing issue CSV from Jira.
 
